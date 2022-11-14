@@ -1,0 +1,25 @@
+Additive Synthesizer
+An audio synthesizer that generates complex tones by adding progressively higher pitched sine waves together, known as partials. There are specific algorithms and transformations that I want to create.
+
+Similar Projects:
+Other projects that I've seen actually come in the form of commercial products. In fact, that's how I discovered additive synthesis. FL Studio, a Digital Audio Workstation, comes with Harmor and Harmless, two powerful additive synthesizers with incredible functionality. I was most interested in their "Prism" and "Grit" properties, respectfully. They both do something that no other form of synthesis can, which is move those partials independently of the fundamental. While as a package they have many more features than I could hope to implement in this project, the basics of generating a bunch of sine waves will be there. The main thing I want to expand on, however, are those functions I mentioned earlier. I want to move my partials in a different way, one that targets either specific harmonics or passes them by in a way that reinforces specific ones. 
+
+Structural Plan:
+I plan to create each fundamental tone as its own object that has as many child partial objects as it takes to get to 20,000Hz. They will be all running constantly, only to be audible when their envelope is triggered. I will separate the fundamental superclass and partial subclass in a file and keep the 112 graphics stuff in the main file, though I may separate some of the event handling/control functions into their own file if they get too hairy. 
+
+Algorithmic Plan:
+The grit/prism effect will surely be the most difficult part of the project, considering it has to move many dozens of frequencies smoothly. It will likely be implemented as a list of target frequencies that the current frequencies are to travel towards. Then, each one will have a mapping attribute with a multiplier that either scales with pyo's SigTo function for automatic linear or exponential control, or with MIDI CC values for manual control. In addition to that, it will need to smooth out the input of MIDI CC so it doesn't sound blocky or quantized. 
+
+Timeline Plan:
+11/18: Simple Additive Synthesizer working
+11/20: Update GUI to allow user to select waveforms
+11/23: Preliminary partial sliding implemented
+11/27: Optimized partial sliding with various modes
+11/30: Clean up the GUI for the new features
+Beyond: Experiment with MIDI input, user-generated waveforms, etc.
+
+Version Control Plan:
+I have created a git repository for all of my code and keep that backed up there. This will also allow me to easily switch platforms/machines if the need arises. 'Version Control Plan.png' shows an image of my repository. I will use command line and the VSCode git extension to keep it updated. 
+
+Module List:
+pyo [approved]
