@@ -19,7 +19,7 @@ Timeline Plan:
 Beyond: Experiment with MIDI input, user-generated waveforms, etc.
 
 Version Control Plan:
-I have created a git repository for all of my code and keep that backed up there. This will also allow me to easily switch platforms/machines if the need arises. 'Version Control Plan.png' shows an image of my repository. I will use command line and the VSCode git extension to keep it updated. 
+I have created a git repository for all of my code and keep that backed up there. This will also allow me to easily switch platforms/machines if the need arises. 'VersionControlPlan.png' shows an image of my repository. I will use command line and the VSCode git extension to keep it updated. 
 
 Module List:
 pyo [approved]
