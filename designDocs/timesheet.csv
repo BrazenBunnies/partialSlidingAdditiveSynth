@@ -1,2 +1,5 @@
 date,startTime,endTime,milestone,notes
-11/15,11:00,11:30,setup,set up most of the code files as well as more miscellaneous files like this one
+11/15/2022,11:00AM,11:30AM,SET,set up most of the code files as well as more miscellaneous files like this one
+11/15/2022,3:30PM,4:30PM,SAS,it makes more sense to create a wave class than one for fundamental with partial subclass
+11/15/2022,9:30PM,11:30PM,PPS,struggled a good deal with structuring the partial shifts but I think I have a decent idea?
+11/15/2022,11:30PM,11:15,SAS,SAS working but needs cleanup and better file handling

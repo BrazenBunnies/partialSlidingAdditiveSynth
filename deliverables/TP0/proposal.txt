@@ -11,12 +11,13 @@ Algorithmic Plan:
 The grit/prism effect will surely be the most difficult part of the project, considering it has to move many dozens of frequencies smoothly. It will likely be implemented as a list of target frequencies that the current frequencies are to travel towards. Then, each one will have a mapping attribute with a multiplier that either scales with pyo's SigTo function for automatic linear or exponential control, or with MIDI CC values for manual control. In addition to that, it will need to smooth out the input of MIDI CC so it doesn't sound blocky or quantized. 
 
 Timeline Plan:
-11/18: Simple Additive Synthesizer working
-11/20: Update GUI to allow user to select waveforms
-11/23: Preliminary partial sliding implemented
-11/27: Optimized partial sliding with various modes
-11/30: Clean up the GUI for the new features
-Beyond: Experiment with MIDI input, user-generated waveforms, etc.
+11/15: (SET) Set up all files and folder structures
+11/18: (SAS) Simple Additive Synthesizer working
+11/20: (UPG) Update GUI to allow user to select waveforms
+11/23: (PPS) Preliminary partial sliding implemented
+11/27: (OPS) Optimized partial sliding with various modes
+11/30: (CUG) Clean up the GUI for the new features
+12/07: (BEY) Experiment with MIDI input, user-generated waveforms, etc.
 
 Version Control Plan:
 I have created a git repository for all of my code and keep that backed up there. This will also allow me to easily switch platforms/machines if the need arises. 'VersionControlPlan.png' shows an image of my repository. I will use command line and the VSCode git extension to keep it updated. 
