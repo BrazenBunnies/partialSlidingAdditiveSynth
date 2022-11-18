@@ -3,3 +3,4 @@ date,startTime,endTime,milestone,notes
 11/15/2022,3:30PM,4:30PM,SAS,it makes more sense to create a wave class than one for fundamental with partial subclass
 11/15/2022,9:30PM,11:30PM,PPS,struggled a good deal with structuring the partial shifts but I think I have a decent idea?
 11/15/2022,11:30PM,11:15,SAS,SAS working but needs cleanup and better file handling
+11/18/2022,5:00PM,,SAS,created MIDI note-based generation instead of frequency-based generation. list updating is not as slow as expected

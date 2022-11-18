@@ -1,7 +1,7 @@
 partialCount = 516
 
 # Natural Partials
-naturalList = [i+1 for i in range(partialCount)]
+naturalList = [i+2 for i in range(partialCount)]
 
 # Target Specific Harmonic
 def nearestTargetMultiple(n, target):
