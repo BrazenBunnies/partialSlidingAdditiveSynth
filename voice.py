@@ -1,15 +1,17 @@
 # Preston Steimel
 # 11/15/2022
-# Generator class
+# Voice class
 # Herein lies the majority of the work
 
 from pyo import *
 from modes import *
 
-class Generator():
+class Voice():
     def __init__(self, note, env):
+        # notes correspond to frequencies
         self.note = note
         self.freq = midiToHz(note)
+        
         self.env = env
         self.naturalPartials = []
         self.fundamental = Sine(self.freq, mul=self.env)
@@ -19,11 +21,12 @@ class Generator():
         self.changedPartials = []
         self.mode = 'Target'
     
-    def changeMode(self, mode):
-        self.mode = mode
-    
     def updateFreq(self):
+        prevFund = self.freq
         self.freq = midiToHz(self.note)
         self.fundamental.freq = self.freq
-        for multi in naturalList:
-            self.naturalPartials[multi-2].freq = self.freq*multi
+        for i in range(partialCount):
+            # self.naturalPartials[partialCount].freq = self.freq*multi
+            prevPartial = prevFund*naturalList[i]
+            self.naturalPartials[i].freq = SigTo(self.freq*naturalList[i],
+            time=0.1, init=prevPartial)

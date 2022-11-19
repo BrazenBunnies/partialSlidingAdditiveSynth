@@ -6,6 +6,8 @@
 
 from cmu_112_graphics import *
 
+whiteKeys = {'a':60, 's':62, 'd':64, 'f':65, 'g':67, 'h':6}
+
 def keyPressed(app, event):
     if event.key == 'a':
         app.voices[0].note = 60
