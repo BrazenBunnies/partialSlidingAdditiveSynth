@@ -26,3 +26,8 @@ Module List:
 pyo [approved]
 
 TP1 Update:
+I've scrapped the inheritance idea, it offered nearly nothing to me. Instead I am creating voices that have all of the partials generated within. My modes.py file is providing configuration for the eventual sliding modes and will also likely include default waveforms. I am also generating the same amount of partials no matter what, and only disabling them past 20,000Hz because I feel like anything else will complicate matters a lot. It is necessary though, as for some reason pyo isn't filtering those frequencies automatically, resulting in crazy noises. I have also implemented limits on octave switching in order to mitigate this further. 
+
+I think I will probably use only SigTo() from here on out. It's just getting so complex to manage all of the signals, I think I already have enough algorithmic complexity. Time-based motion seems out of this world for now. 
+
+I'm a little behind schedule, but aside from that, I'm doing well and I'm happy with my progress. I am still unsure when performance will start to hinder me, as there are situations where my computer just craps out seemingly randomly. I suppose I'll get there when I do. 

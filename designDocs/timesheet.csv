@@ -7,4 +7,7 @@ date,startTime,endTime,milestone,notes
 11/18/2022,07:30PM,08:30PM,SAS,unfocused work. on a shift at my job. got portamento started using SigTo. for loops still pretty fast
 11/18/2022,09:30PM,10:00PM,SAS,debugging portamento
 11/19/2022,10:30AM,11:30PM,SAS,fixed portamento. adding comments and getting some graphics up
-11/19/2022,06:30PM,09:30PM,SAS,BIG optimization with keypresses, cleaner AND faster :)
+11/19/2022,06:30PM,09:30PM,SAS,BIG optimization with keypresses. cleaner AND faster :)
+11/19/2022,11:30PM,02:00AM,SAS,getting a lot of UI elements in. keyreleased not working
+11/20/2022,10:00AM,12:00PM,SAS,working on spectrum analyzer. stopped to get SigTo out in app and realized there's no fundamental
+11/20/2022,2:00PM,4:00PM,SAS,just cleaning up some things for TP1. locked aspect ratio

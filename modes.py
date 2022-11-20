@@ -1,4 +1,4 @@
-partialCount = 516
+partialCount = 128
 
 # Natural Partials
 naturalList = [i+2 for i in range(partialCount)]

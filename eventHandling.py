@@ -6,78 +6,34 @@
 
 from cmu_112_graphics import *
 
-whiteKeys = {'a':60, 's':62, 'd':64, 'f':65, 'g':67, 'h':6}
-
+# qwerty keyboard input
 def keyPressed(app, event):
-    if event.key == 'a':
-        app.voices[0].note = 60
+    # piano keys
+    if event.key in app.whiteKeys:
+        app.voices[0].note = app.whiteKeys[event.key][0]
         app.voices[0].updateFreq()
         app.env.play()
-    if event.key == 'w':
-        app.voices[0].note = 61
+    if event.key in app.blackKeys:
+        app.voices[0].note = app.blackKeys[event.key][0]
         app.voices[0].updateFreq()
         app.env.play()
-    if event.key == 's':
-        app.voices[0].note = 62
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'e':
-        app.voices[0].note = 63
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'd':
-        app.voices[0].note = 64
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'f':
-        app.voices[0].note = 65
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 't':
-        app.voices[0].note = 66
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'g':
-        app.voices[0].note = 67
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'y':
-        app.voices[0].note = 68
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'h':
-        app.voices[0].note = 69
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'u':
-        app.voices[0].note = 70
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'j':
-        app.voices[0].note = 71
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'k':
-        app.voices[0].note = 72
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'o':
-        app.voices[0].note = 73
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'l':
-        app.voices[0].note = 74
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == 'p':
-        app.voices[0].note = 75
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == ';':
-        app.voices[0].note = 76
-        app.voices[0].updateFreq()
-        app.env.play()
-    if event.key == "'":
-        app.voices[0].note = 77
-        app.voices[0].updateFreq()
-        app.env.play()
+    
+    # octave keys
+    if event.key == 'z':
+        if app.octave > 1:
+            app.octave -= 1
+            for key in app.whiteKeys:
+                app.whiteKeys[key][0] -= 12
+            for key in app.blackKeys:
+                app.blackKeys[key][0] -= 12
+    if event.key == 'x':
+        if app.octave < 7:
+            app.octave += 1
+            for key in app.whiteKeys:
+                app.whiteKeys[key][0] += 12
+            for key in app.blackKeys:
+                app.blackKeys[key][0] += 12
+
+# lock aspect ratio
+def sizeChanged(app):
+    app.setSize(2*app.height, app.height)
