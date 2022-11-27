@@ -11,3 +11,7 @@ date,startTime,endTime,milestone,notes
 11/19/2022,11:30PM,02:00AM,SAS,getting a lot of UI elements in. keyreleased not working
 11/20/2022,10:00AM,12:00PM,SAS,working on spectrum analyzer. stopped to get SigTo out in app and realized there's no fundamental
 11/20/2022,02:00PM,04:00PM,SAS,just cleaning up some things for TP1. locked aspect ratio
+11/23/2022,04:00PM,05:00PM,PPS,restructuring the modes to be more flexible and take user values
+11/23/2022,09:30PM,11:00PM,PPS,gave in to OOP. modes now have a class!
+11/24/2022,04:00PM,05:00PM,PPS,adding some more modes and freed up time-based tkinter events
+11/26/2022,03:00PM,,SAS,lots of gui work today. started interactable classes

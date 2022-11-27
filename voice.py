@@ -15,8 +15,14 @@ class Voice():
         self.note = note
         self.freq = midiToHz(note)
         self.partials = []
-        self.fundamental = Sine(self.freq, mul=self.env).out()
-        for multi in naturalList:
+        
+        # create fundamental
+        self.fundamental = Sine(SigTo(self.freq, time=self.porta),
+                                mul=self.env).out()
+        
+        # create partials
+        for i in range(partialCount):
+            multi = natPartials[i]
             self.partials.append(Sine(self.freq*multi, 
                                  mul=self.env/multi).out())
         self.changedPartials = []
@@ -29,11 +35,11 @@ class Voice():
                                  init=prevFund))
         
         for i in range(partialCount):
-            prevPartial = prevFund*naturalList[i]
-            if self.freq*naturalList[i] > 20000:
+            prevPartial = prevFund*natPartials[i]
+            if self.freq*natPartials[i] > 20000:
                 self.partials[i].mul = 0
-            else: self.partials[i].mul = self.env/naturalList[i]
-            self.partials[i].setFreq(SigTo(self.freq*naturalList[i],
+            else: self.partials[i].mul = self.env/natPartials[i]
+            self.partials[i].setFreq(SigTo(self.freq*natPartials[i],
             time=self.porta, init=prevPartial))
     
     def updatePortaTime(self):

@@ -34,6 +34,12 @@ def keyPressed(app, event):
             for key in app.blackKeys:
                 app.blackKeys[key][0] += 12
 
+def mouseDragged(app, event):
+    print(event.x, event.x)
+
+def mousePressed(app, event):
+    print(event.x, event.y)
+
 # lock aspect ratio
 def sizeChanged(app):
     app.setSize(2*app.height, app.height)

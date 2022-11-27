@@ -5,7 +5,7 @@
 from voice import *
 from view import *
 
-s = Server().boot()
+s = Server(buffersize=32).boot()
 s.amp = 0.7
 
 def appStarted(app):
@@ -25,7 +25,7 @@ def appStarted(app):
     app.whiteKeys = {'a':[60,0], 's':[62,1], 'd':[64,2], 'f':[65,3],
                      'g':[67,4], 'h':[69,5], 'j':[71,6], 'k':[72,7],
                      'l':[74,8], ';':[76,9], "'":[77,10]}
-    # index 1 in the lists are more for graphics placement than actually index
+    # indices in the lists are more for graphics placement than actually index
     app.blackKeys = {'w':[61,1], 'e':[63,2], 't':[66,4], 'y':[68,5],
                      'u':[70,6], 'o':[73,8], 'p':[75,9]}
     
@@ -33,18 +33,34 @@ def appStarted(app):
     app.width = 1000
     app.height = 500
     app.margin = app.width//100
+    app.modesX, app.modesY = app.width/10, app.height/10
+    app.modesSize = app.width/50
+    
+    # colors
+    app.bg = 'RoyalBlue3'
+    app.outL = 'RoyalBlue4'
+    app.interNeut = 'RoyalBlue2'
+    app.interClic = 'RoyalBlue1'
     
     # misc attributes
     app.lowFreq, app.highFreq = 20, 20000
     
+    # modes dictionary
+    app.modes = {target.name:target, switch.name:switch, extend.name:extend}
+    app.deharmMode = target.name
+    
     # start audio server
-    s.gui(locals())
+    s.start()
+
+def appStopped(app):
+    # stop audio server
+    s.stop()    
 
 def runSynth():
     print('_'*50)
-    print('Running Partial Sliding Additive Synthesizer!')
+    print('Running Deharmonizing Additive Synthesizer!')
     print()
-    runApp(width=1000, height=500, title='Slidittive')
+    runApp(width=1000, height=500, title='Deharmonizing Additive Synthesizer')
 
 def main():
     runSynth()
