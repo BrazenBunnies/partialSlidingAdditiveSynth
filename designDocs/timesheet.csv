@@ -14,4 +14,7 @@ date,startTime,endTime,milestone,notes
 11/23/2022,04:00PM,05:00PM,PPS,restructuring the modes to be more flexible and take user values
 11/23/2022,09:30PM,11:00PM,PPS,gave in to OOP. modes now have a class!
 11/24/2022,04:00PM,05:00PM,PPS,adding some more modes and freed up time-based tkinter events
-11/26/2022,03:00PM,,SAS,lots of gui work today. started interactable classes
+11/26/2022,03:00PM,08:00PM,CUG,lots of gui work today. started interactives classes
+11/27/2022,01:30PM,02:30PM,PPS,something broke. python keeps crashing. solved: i changed one thing to SigTo but not the updater function. built random mode
+11/27/2022,03:30PM,04:30PM,PPS,AND IT WORKS!!! the most difficult part of this project is working. still needs cleanup and GUI but DAMN!
+11/28/2022,08:00PM,10:30PM,CUG,worked a good deal on the button and dropdown classes and added powers and primes modes

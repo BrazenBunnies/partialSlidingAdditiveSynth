@@ -55,7 +55,7 @@ def drawModes(app, canvas, cx, cy, size):
     canvas.create_rectangle(cx-size*4, cy+size, cx+size, cy+size*3,
                             outline=app.outL, fill='RoyalBlue1', width=size/10)
     canvas.create_text(cx-size*2, cy+size*2,
-                       text=app.deharmMode, font=f'Ubuntu {int(size)}',
+                       text=app.deharmMode.name, font=f'Ubuntu {int(size)}',
                        fill='white')
     canvas.create_text(cx+size/4, cy+size*2, text='⋁',
                        font=f'Ubuntu {int(size)}', fill='white')
@@ -64,7 +64,7 @@ def drawModes(app, canvas, cx, cy, size):
     canvas.create_rectangle(cx+size, cy+size, cx+size*4, cy+size*3,
                             outline=app.outL, fill='RoyalBlue1', width=size/10)
     canvas.create_text(cx+size*2.5, cy+size*2,
-                       text=str(app.modes[app.deharmMode].value),
+                       text=str(app.deharmMode.value),
                        font=f'Ubuntu {int(size)}', fill='white')
     canvas.create_text(cx+size*1.5, cy+size*2, text='-',
                        font=f'Ubuntu {int(size)}', fill='white')

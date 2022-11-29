@@ -4,17 +4,18 @@
 # Herein lies the majority of the work
 
 from pyo import *
-from modes import *
+from deharmModes import *
 
 class Voice():
-    def __init__(self, note, env):
+    def __init__(self, note, env, porta):
         # notes correspond to frequencies
-        self.porta = 0.1
         self.env = env
+        self.porta = porta
         
         self.note = note
         self.freq = midiToHz(note)
         self.partials = []
+        self.deharmMode = primes
         
         # create fundamental
         self.fundamental = Sine(SigTo(self.freq, time=self.porta),
@@ -23,24 +24,25 @@ class Voice():
         # create partials
         for i in range(partialCount):
             multi = natPartials[i]
-            self.partials.append(Sine(self.freq*multi, 
+            self.partials.append(Sine(SigTo(self.freq*multi, time=self.porta), 
                                  mul=self.env/multi).out())
-        self.changedPartials = []
-        self.mode = 'Target'
     
+    # update all of the frequncies of each partial
+    # according to fundamental and deharmonization
     def updateFreq(self):
-        prevFund = self.freq
         self.freq = midiToHz(self.note)
-        self.fundamental.setFreq(SigTo(self.freq, time=self.porta,
-                                 init=prevFund))
+        self.fundamental.freq.setValue(self.freq)   # tapping the SigTo value
         
         for i in range(partialCount):
-            prevPartial = prevFund*natPartials[i]
-            if self.freq*natPartials[i] > 20000:
+            # amplitude low too quick, maybe just use a filter at 20k
+            if self.freq*self.deharmMode.partials[i] > 20000:
                 self.partials[i].mul = 0
             else: self.partials[i].mul = self.env/natPartials[i]
-            self.partials[i].setFreq(SigTo(self.freq*natPartials[i],
-            time=self.porta, init=prevPartial))
+            self.partials[i].freq.setValue(self.freq*self.deharmMode.partials[i])
+    
+    def setMode(self, mode):
+        if isinstance(mode, DeharmMode):
+            self.deharmMode = mode
     
     def updatePortaTime(self):
         pass

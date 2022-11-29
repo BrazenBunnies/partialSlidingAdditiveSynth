@@ -4,7 +4,7 @@
 # Key and mouse presses, MIDI Input
 # CONTROLLER in MVC
 
-from cmu_112_graphics import *
+from interactives import *
 
 # qwerty keyboard input
 def keyPressed(app, event):
@@ -33,6 +33,17 @@ def keyPressed(app, event):
                 app.whiteKeys[key][0] += 12
             for key in app.blackKeys:
                 app.blackKeys[key][0] += 12
+    
+    # testing the modes using b n m
+    if event.key == 'b':
+        app.voices[0].deharmMode.updatePerc(0.0)
+        app.voices[0].updateFreq()
+    if event.key == 'n':
+        app.voices[0].deharmMode.updatePerc(0.5)
+        app.voices[0].updateFreq()
+    if event.key == 'm':
+        app.voices[0].deharmMode.updatePerc(1.0)
+        app.voices[0].updateFreq()
 
 def mouseDragged(app, event):
     print(event.x, event.x)

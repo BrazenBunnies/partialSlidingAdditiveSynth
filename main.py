@@ -5,29 +5,30 @@
 from voice import *
 from view import *
 
-s = Server(buffersize=32).boot()
+s = Server(buffersize=256).boot()
 s.amp = 0.7
 
 def appStarted(app):
     # create voices
-    app.env = Adsr(attack=0.01, decay=0.1, sustain=1.8, release=1.2,
+    app.env = Adsr(attack=0.01, decay=0.5, sustain=1.8, release=1.2,
     dur=3.01, mul = 0.7)
-    app.portaTime = 0.1
+    app.portaTime = 0.5
     
     app.voiceCount = 1
     app.voices = []
     for voice in range(app.voiceCount):
-        app.voices.append(Voice(69, app.env))
+        app.voices.append(Voice(69, app.env, app.portaTime))
     
     app.octave = 4
     
     # piano key dictionary
-    app.whiteKeys = {'a':[60,0], 's':[62,1], 'd':[64,2], 'f':[65,3],
-                     'g':[67,4], 'h':[69,5], 'j':[71,6], 'k':[72,7],
-                     'l':[74,8], ';':[76,9], "'":[77,10]}
+    # maybe make these all buttons...
+    app.whiteKeys = {"a":[60,0], "s":[62,1], "d":[64,2], "f":[65,3],
+                     "g":[67,4], "h":[69,5], "j":[71,6], "k":[72,7],
+                     "l":[74,8], ";":[76,9], "'":[77,10]}
     # indices in the lists are more for graphics placement than actually index
-    app.blackKeys = {'w':[61,1], 'e':[63,2], 't':[66,4], 'y':[68,5],
-                     'u':[70,6], 'o':[73,8], 'p':[75,9]}
+    app.blackKeys = {"w":[61,1], "e":[63,2], "t":[66,4], "y":[68,5],
+                     "u":[70,6], "o":[73,8], "p":[75,9]}
     
     # canvas attributes
     app.width = 1000
@@ -46,8 +47,8 @@ def appStarted(app):
     app.lowFreq, app.highFreq = 20, 20000
     
     # modes dictionary
-    app.modes = {target.name:target, switch.name:switch, extend.name:extend}
-    app.deharmMode = target.name
+    app.modes = {target, switch, extend, random}
+    app.deharmMode = extend
     
     # start audio server
     s.start()
