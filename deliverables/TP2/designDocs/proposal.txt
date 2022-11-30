@@ -11,26 +11,15 @@ Algorithmic Plan:
 The grit/prism effect will surely be the most difficult part of the project, considering it has to move many dozens of frequencies smoothly. It will likely be implemented as a list of target frequencies that the current frequencies are to travel towards. Then, each one will have a mapping attribute with a multiplier that either scales with pyo's SigTo function for automatic linear or exponential control, or with MIDI CC values for manual control. In addition to that, it will need to smooth out the input of MIDI CC so it doesn't sound blocky or quantized. 
 
 Timeline Plan:
-11/15: (SET) Set up all files and folder structures
-11/18: (SAS) Simple Additive Synthesizer working
-11/20: (UPG) Update GUI to allow user to select waveforms
-11/23: (PPS) Preliminary partial sliding implemented
-11/27: (OPS) Optimized partial sliding with various modes
-11/30: (CUG) Clean up the GUI for the new features
-12/07: (BEY) Experiment with MIDI input, user-generated waveforms, etc.
+11/18: Simple Additive Synthesizer working
+11/20: Update GUI to allow user to select waveforms
+11/23: Preliminary partial sliding implemented
+11/27: Optimized partial sliding with various modes
+11/30: Clean up the GUI for the new features
+Beyond: Experiment with MIDI input, user-generated waveforms, etc.
 
 Version Control Plan:
 I have created a git repository for all of my code and keep that backed up there. This will also allow me to easily switch platforms/machines if the need arises. 'VersionControlPlan.png' shows an image of my repository. I will use command line and the VSCode git extension to keep it updated. 
 
 Module List:
 pyo [approved]
-
-TP1 Update:
-I've scrapped the inheritance idea, it offered nearly nothing to me. Instead I am creating voices that have all of the partials generated within. My modes.py file is providing configuration for the eventual sliding modes and will also likely include default waveforms. I am also generating the same amount of partials no matter what, and only disabling them past 20,000Hz because I feel like anything else will complicate matters a lot. It is necessary though, as for some reason pyo isn't filtering those frequencies automatically, resulting in crazy noises. I have also implemented limits on octave switching in order to mitigate this further. 
-
-I think I will probably use only SigTo() from here on out. It's just getting so complex to manage all of the signals, I think I already have enough algorithmic complexity. Time-based motion seems out of this world for now. 
-
-I'm a little behind schedule, but aside from that, I'm doing well and I'm happy with my progress. I am still unsure when performance will start to hinder me, as there are situations where my computer just craps out seemingly randomly. I suppose I'll get there when I do. 
-
-TP2 Update:
-I have the ability to not use SigTo(), just haven't implemented it. I am adding many UI elements that will allow for the manipulation of those things, all object oriented. This makes time domain analysis much more likely now. Disabling signals past 20,000Hz doesn't work when signals need to slide a large amount. I will need to implement a general filter. 
