@@ -20,4 +20,5 @@ date,startTime,endTime,milestone,notes
 11/28/2022,08:00PM,10:30PM,CUG,worked a good deal on the button and dropdown classes and added powers and primes modes
 11/29/2022,03:00PM,04:30PM,CUG,have dropdown menus working now
 11/30/2022,02:30AM,03:30AM,CUG,getting sliders implemented
-11/30/2022,02:30PM,,CUG,cleaning up things for TP2, not at MVP yet.
+11/30/2022,02:30PM,04:00PM,CUG,cleaning up things for TP2, not at MVP yet.
+11/30/2022,08:30PM,11:00PM,CUG,finished sliders! i think i can start implementing now

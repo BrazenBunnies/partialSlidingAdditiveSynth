@@ -16,7 +16,7 @@ def appStarted(app):
     
     # modes dictionary
     app.modes = {target, switch, extend, random, powers, primes}
-    app.deharmMode = target
+    app.deharmMode = extend
     
     app.voiceCount = 1
     app.voices = []

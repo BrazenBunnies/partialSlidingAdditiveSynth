@@ -96,7 +96,7 @@ def createRandomPartials(sections):
 def createPowersPartials(exponent):
     powersPartials = []
     for partial in natPartials:
-        powersPartials.append(partial**2)
+        powersPartials.append(partial**exponent)
     return powersPartials
 
 # Converge partials on prime harmonics only

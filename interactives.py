@@ -4,24 +4,29 @@
 
 from cmu_112_graphics import *
 
-class Button:
-    # attributes
-    active = True
-    visible = True
-    
-    def __init__(self, app, cx, cy, width, height, label, action):
+class Button:    
+    def __init__(self, app, cx, cy, width, height, label, action, color=None,
+                 active=True, visible=True):
         # pass in
         self.cx, self.cy, self.width, self.height = cx, cy, width, height
         self.line = app.lineWidth
         self.color, self.borderColor = app.buttonColor, app.lineColor
         self.label = label
         self.action = action
+        if color != None: self.color = color
+        self.active = active
+        self.visible = visible
         
         # calculate draw vars
+        self.calculateBounds()
+        if width >= height:
+            self.font = f'Ubuntu {height//2}'
+        else: self.font = f'Ubuntu {width//3}'
+        self.fontColor = app.fontColor
+    
+    def calculateBounds(self):
         self.x0, self.x1 = self.cx - self.width/2, self.cx + self.width/2
         self.y0, self.y1 = self.cy - self.height/2, self.cy + self.height/2
-        self.font = f'Ubuntu {height//2}'
-        self.fontColor = app.fontColor
     
     def wasPressed(self, x, y):
         if self.active:
@@ -98,27 +103,56 @@ class Dropdown(Button):
             button.active = self.open
 
 class Slider(Button):
+    moving = False
+    value = 0.0
+    
     def __init__(self, app, cx, cy, width, height, length, axis):
         # pass in
+        super().__init__(app, cx, cy, width, height, self.value, self.activate)
         self.startX, self.startY, self.length = cx, cy, length
         self.axis = axis
         
         if self.axis == 'x':
-            self.eX, self.eY = self.sX + length, self.sY
+            self.endX, self.endY = self.cx + length, self.cy
         elif self.axis == 'y':
-            self.eX, self.eY = self.sX, self.sY + length
+            self.endX, self.endY = self.cx, self.cy - length
         
-        self.handlePos = 0.0
-        self.handle = Button(app, self.sX, self.sY, 10, 5, '', self.setPos)
-        
+        # from https://stackoverflow.com/questions/6149006/how-to-display-a-float-with-two-decimal-places
+        self.label = '%.2f' % self.value
         self.lineWidth = app.lineWidth
         self.color, self.borderColor = app.buttonColor, app.lineColor
-        self.handleColor = app.accentColor
+        self.accentColor = app.accentColor
     
-    def setPos(self, pos):
-        self.handlePos = pos
+    def activate(self, x, y):
+        self.moving = True
+        self.pressedX, self.pressedY = x, y
+        self.posX, self.posY = self.cx, self.cy
+    
+    def updatePos(self, x, y):
+        if self.axis == 'x':
+            newX = x - self.pressedX + self.posX
+            if newX < self.startX:
+                self.cx = self.startX
+            elif newX > self.endX:
+                self.cx = self.endX
+            else:
+                self.cx = newX
+            self.value = (self.cx-self.startX)/(self.endX-self.startX)
+        elif self.axis == 'y':
+            newY = y - self.pressedY + self.posY
+            if newY > self.startY:
+                self.cy = self.startY
+            elif newY < self.endY:
+                self.cy = self.endY
+            else:
+                self.cy = newY
+            self.value = (self.cy-self.startY)/(self.endY-self.startY)
+        self.calculateBounds()
+        self.label = '%.2f' % abs(self.value)
     
     def draw(self, canvas):
-        canvas.create_line(self.sX, self.sY, self.eX, self.eY,
-                           width=self.lineWidth, fill=self.color)
+        canvas.create_line(self.startX, self.startY, self.endX, self.endY,
+                           width=self.lineWidth*3, fill=self.color)
+        canvas.create_line(self.startX, self.startY, self.cx, self.cy,
+                           width=self.lineWidth, fill=self.accentColor)
         super().draw(canvas)
