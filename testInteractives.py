@@ -11,7 +11,7 @@ def count():
 droppies = ['target', 'switch', 'extend', 'random', 'powers', 'primes']
 
 def appStarted(app):
-    app.lineWidth = 3
+    app.lineWidth = 2
     app.lineColor = 'RoyalBlue4'
     app.buttonColor = 'RoyalBlue2'
     app.accentColor = 'yellow'
@@ -20,8 +20,8 @@ def appStarted(app):
     app.c = Button(app, 300, 250, 100, 50, 'Count', count)
     app.d = Dropdown(app, 500, 100, 120, 50, 'Drops', droppies)
     app.buttons = [app.d, app.c, app.b]
-    app.s = Slider(app, 100, 100, 30, 50, 300, 'x')
-    app.sv = Slider(app, 700, 450, 30, 50, 300, 'y')
+    app.s = Slider(app, 100, 100, 30, 50, 300, 'normal', 'x', 1.0)
+    app.sv = Slider(app, 700, 400, 30, 50, 300, 'vert', 'y', 5.0)
     app.sliders = [app.s, app.sv]
     
 def mousePressed(app, event):
@@ -44,6 +44,8 @@ def mouseReleased(app, event):
         slider.moving = False
 
 def redrawAll(app, canvas):
+    canvas.create_rectangle(0, 0, app.width, app.height, fill='RoyalBlue3')
+    
     # reversed so that the highest priority elements are drawn last
     for button in reversed(app.buttons):
         button.draw(canvas)

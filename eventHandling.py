@@ -36,21 +36,75 @@ def keyPressed(app, event):
     
     # testing the modes using b n m
     if event.key == 'b':
-        app.voices[0].deharmMode.updatePerc(0.0)
-        app.voices[0].updateFreq()
+        for voice in app.voices:
+            voice.deharmMode.updatePerc(0.0)
     if event.key == 'n':
-        app.voices[0].deharmMode.updatePerc(0.5)
-        app.voices[0].updateFreq()
+        for voice in app.voices:
+            voice.deharmMode.updatePerc(0.5)
     if event.key == 'm':
-        app.voices[0].deharmMode.updatePerc(1.0)
-        app.voices[0].updateFreq()
-
-def mouseDragged(app, event):
-    print(event.x, event.x)
+        for voice in app.voices:
+            voice.deharmMode.updatePerc(1.0)
+    
+    for voice in app.voices:
+        voice.updateFreq()
 
 def mousePressed(app, event):
-    print(event.x, event.y)
+    # for button in app.buttons:
+    #     if button.wasPressed(event.x, event.y):
+    #         button.action()
+    #         # break skips other buttons
+    #         break
+    if app.modeIncr.wasPressed(event.x, event.y):
+        app.modeIncr.action(app.deharmMode)
+        app.modeVal.label = app.deharmMode.value
+    if app.modeDecr.wasPressed(event.x, event.y):
+        app.modeDecr.action(app.deharmMode)
+        app.modeVal.label = app.deharmMode.value
+    
+    for slider in app.sliders:
+        if slider.wasPressed(event.x, event.y):
+            slider.action(event.x, event.y)
+    
+    # when mode menu is opened, if a child is pressed,
+    # update the label, the deharm mode, the voice mode, and the mode value
+    if app.modeMenu.wasPressed(event.x, event.y):
+        app.modeMenu.action()
+        app.deharmMode = app.modeMenu.label
+        app.modeVal.label = app.deharmMode.value
+        for voice in app.voices:
+            voice.setMode(app.deharmMode)
+    else:
+        if app.modeMenu.open:
+            app.modeMenu.toggleOpen()
+    
+    for voice in app.voices:
+        voice.deharmMode.updatePerc(app.modeSlider.value)
+    
+    for voice in app.voices:
+        voice.updateFreq()
 
-# lock aspect ratio
+def mouseDragged(app, event):
+    for slider in app.sliders:
+        if slider.moving:
+            slider.updatePos(event.x, event.y)
+    
+    # mode perc update
+    for voice in app.voices:
+        voice.deharmMode.updatePerc(app.modeSlider.value)
+    for voice in app.voices:
+        voice.updateFreq()
+    
+    # adsr update
+    app.env.setAttack(app.attack.value)
+    app.env.setDecay(app.decay.value)
+    app.env.setSustain(app.sustain.value)
+    app.env.setRelease(app.release.value)
+    app.env.setDur(app.attack.value+app.decay.value+app.release.value)
+
+def mouseReleased(app, event):
+    for slider in app.sliders:
+        slider.moving = False
+
+# lock size
 def sizeChanged(app):
-    app.setSize(2*app.height, app.height)
+    app.setSize(1000, 500)

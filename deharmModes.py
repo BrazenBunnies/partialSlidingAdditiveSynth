@@ -22,20 +22,30 @@ class DeharmMode:
         self.ref = self.creator(self.value)
         self.partials = natPartials + []    # break alias
     
-    def __hash__(self): # for the dictionary!
+    def __hash__(self): # for dictionaries
         return hash(self.name)
+    
+    def __str__(self):
+        return self.name
     
     def updateValue(self, value):
         self.value = value
-        self.perc = 0.0
         self.ref = self.creator(self.value)
-        self.partials = natPartials + []    # break alias
+        self.updatePerc(self.perc)
     
     # get the in between value of the reference and natural partials
     def updatePerc(self, perc):
         for i in range(partialCount):
             difference = self.ref[i]-natPartials[i]
             self.partials[i] = natPartials[i]+perc*difference
+
+def incrModeVal(mode):
+    if mode.value < 99:
+        mode.updateValue(mode.value + 1)
+
+def decrModeVal(mode):
+    if mode.value > 1:
+        mode.updateValue(mode.value - 1)
 
 # Target specific harmonics
 def nearestTargetMultiple(n, target):
@@ -74,22 +84,19 @@ def createExtendPartials(stretch):
     return stretchPartials
 
 # Create a random mapping for the partials
-# divides into a certain amount of sections to be jumbled
+# randomizes mini-lists of length count
 # should be recreated each time it's selected
-def createRandomPartials(sections):
+def createRandomPartials(count):
     randomPartials = []
-    for section in range(sections):
-        elems = partialCount // sections
-        group = natPartials[section*elems:(section+1)*elems]
-        rand.shuffle(group)
-        randomPartials.extend(group)
-        # for i in range(len(group)):
-        #     randomPartials.append(group[i])
-    remainderGroup = natPartials[-(partialCount%sections):]
-    rand.shuffle(remainderGroup)
-    randomPartials.extend(remainderGroup)
-    # for i in range(len(remainderGroup)):
-    #     randomPartials.append(remainderGroup[i])
+    for section in range(partialCount//count):
+        slice = natPartials[section*count:(section+1)*count]
+        rand.shuffle(slice)
+        randomPartials.extend(slice)
+    finalLen = partialCount%count
+    if finalLen != 0:
+        finalSlice = natPartials[-(partialCount%count):]
+        rand.shuffle(finalSlice)
+        randomPartials.extend(finalSlice)
     return randomPartials
 
 # Put every partial to a power of itself
@@ -122,6 +129,7 @@ def nthPrime(n):
             found += 1
     return guess
 
+# add shifts the primes so that they effectively stop being prime
 def createPrimesPartials(add):
     primesPartials = []
     currPrimeIndex = 0
@@ -138,10 +146,20 @@ def createPrimesPartials(add):
             nextPrime = nthPrime(currPrimeIndex+1)
     return primesPartials
 
+# Convert partials into 2d lists and perform matrix operations
+# like transverse and whatnot and then convert back to 1d list
+
+# Series thing
+
 # create the actual objects
 target = DeharmMode('Target', createTargetPartials, 5)
 switch = DeharmMode('Switch', createSwitchPartials, 2)
 extend = DeharmMode('Extend', createExtendPartials, 1)
-random = DeharmMode('Random', createRandomPartials, 10)
+random = DeharmMode('Random', createRandomPartials, 9)
 powers = DeharmMode('Powers', createPowersPartials, 2)
-primes = DeharmMode('Primes', createPrimesPartials, 3)
+primes = DeharmMode('Primes', createPrimesPartials, 1)
+deharmModes = {target.name:target, switch.name:switch, extend.name:extend,
+               random.name:random, powers.name:powers, primes.name:primes}
+
+def setMode(app, mode):
+    app.deharmMode = mode
