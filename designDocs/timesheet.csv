@@ -26,4 +26,6 @@ date,startTime,endTime,milestone,notes
 12/01/2022,08:30PM,11:00PM,CUG,trying to figure out how to pass in values to be displayed
 12/02/2022,03:00PM,08:00PM,CUG,got a lot of things working but also have a lot of bugs to work out
 12/03/2022,12:00AM,01:00AM,CUG,not sure why linking these values is so difficult
-12/03/2022,10:30AM,fixed the bugs and added adsr envelope
+12/03/2022,10:30AM,01:00PM,CUG,fixed the bugs and added adsr envelope
+12/03/2022,09:30PM,02:30AM,CUG,spectrum analyzer implemented. starting waveform presets
+12/04/2022,02:00PM,,CUG,added portamento slider and fixed a bug with setting the value of horizontal sliders

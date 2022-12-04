@@ -10,12 +10,12 @@ from interactives import *
 def keyPressed(app, event):
     # piano keys
     if event.key in app.whiteKeys:
-        app.voices[0].note = app.whiteKeys[event.key][0]
-        app.voices[0].updateFreq()
+        app.voice.note = app.whiteKeys[event.key][0]
+        app.voice.updateFreq()
         app.env.play()
     if event.key in app.blackKeys:
-        app.voices[0].note = app.blackKeys[event.key][0]
-        app.voices[0].updateFreq()
+        app.voice.note = app.blackKeys[event.key][0]
+        app.voice.updateFreq()
         app.env.play()
     
     # octave keys
@@ -36,17 +36,13 @@ def keyPressed(app, event):
     
     # testing the modes using b n m
     if event.key == 'b':
-        for voice in app.voices:
-            voice.deharmMode.updatePerc(0.0)
+        app.voice.deharmMode.updatePerc(0.0)
     if event.key == 'n':
-        for voice in app.voices:
-            voice.deharmMode.updatePerc(0.5)
+        app.voice.deharmMode.updatePerc(0.5)
     if event.key == 'm':
-        for voice in app.voices:
-            voice.deharmMode.updatePerc(1.0)
+        app.voice.deharmMode.updatePerc(1.0)
     
-    for voice in app.voices:
-        voice.updateFreq()
+    app.voice.updateFreq()
 
 def mousePressed(app, event):
     # for button in app.buttons:
@@ -71,17 +67,13 @@ def mousePressed(app, event):
         app.modeMenu.action()
         app.deharmMode = app.modeMenu.label
         app.modeVal.label = app.deharmMode.value
-        for voice in app.voices:
-            voice.setMode(app.deharmMode)
+        app.voice.setMode(app.deharmMode)
     else:
         if app.modeMenu.open:
             app.modeMenu.toggleOpen()
     
-    for voice in app.voices:
-        voice.deharmMode.updatePerc(app.modeSlider.value)
-    
-    for voice in app.voices:
-        voice.updateFreq()
+    app.voice.deharmMode.updatePerc(app.modeSlider.value)
+    app.voice.updateFreq()
 
 def mouseDragged(app, event):
     for slider in app.sliders:
@@ -89,10 +81,8 @@ def mouseDragged(app, event):
             slider.updatePos(event.x, event.y)
     
     # mode perc update
-    for voice in app.voices:
-        voice.deharmMode.updatePerc(app.modeSlider.value)
-    for voice in app.voices:
-        voice.updateFreq()
+    app.voice.deharmMode.updatePerc(app.modeSlider.value)
+    app.voice.updateFreq()
     
     # adsr update
     app.env.setAttack(app.attack.value)
@@ -100,10 +90,19 @@ def mouseDragged(app, event):
     app.env.setSustain(app.sustain.value)
     app.env.setRelease(app.release.value)
     app.env.setDur(app.attack.value+app.decay.value+app.release.value)
+    
+    # porta update
+    app.portaTime = app.portaSlider.value
+    app.voice.updatePortaTime(app.portaTime)
 
 def mouseReleased(app, event):
     for slider in app.sliders:
         slider.moving = False
+
+def timerFired(app):
+    for i in range(len(app.specVals)-1):
+        app.specVals[i] = app.specVals[i+1]+[]
+    app.specVals[-1] = app.voice.canvasLogList(app.specy0, app.specy1)+[]
 
 # lock size
 def sizeChanged(app):

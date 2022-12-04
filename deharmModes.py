@@ -137,13 +137,15 @@ def createPrimesPartials(add):
     nextPrime = nthPrime(currPrimeIndex+1)
     for partial in natPartials:
         if partial-currPrime <= nextPrime-partial:
-            primesPartials.append(float(currPrime-1+add))
+            primesPartials.append(float(currPrime))
         else:
-            primesPartials.append(float(nextPrime-1+add))
-        if partial == currPrime:
+            primesPartials.append(float(nextPrime))
+        if partial == nextPrime:
             currPrimeIndex += 1
             currPrime = nextPrime
             nextPrime = nthPrime(currPrimeIndex+1)
+    for i in range(len(primesPartials)):
+        primesPartials[i] += add - 1
     return primesPartials
 
 # Convert partials into 2d lists and perform matrix operations

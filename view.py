@@ -43,24 +43,57 @@ def drawKeyboard(app, canvas):
                        text=f'Octave: {app.octave}',
                        font=f'Ubuntu {app.height//20}', fill='white')
 
-# converts a frequency to a pixel position on a log scale
-def convertLog(app, canvas, width, height, scale):
-    pass
-
 # draw a spectrum analyzer from the partials being generated
 def spectrumAnalyzer(app, canvas):
-    width = app.width/4
-    height = app.height
-    x0, x1 = app.width-width, app.width-app.margin
-    y0, y1 = app.margin, height-app.margin
-    canvas.create_rectangle(x0, y0, x1, y1, outline=app.lineColor,
-                            fill='black', width=4)
+    canvas.create_rectangle(app.specx0, app.specy0, app.specx1, app.specy1,
+                            outline=app.lineColor, fill='black', width=0)
+    
+    for i in range(len(app.specVals)-1):
+        # CHANGE COLOR BASED ON AMPLITUDE?
+        for partial in range(len(app.specVals[0])):
+            canvas.create_line(i*app.sampleLength+app.specx0,
+                               app.specVals[i][partial],
+                               (i+1)*app.sampleLength+app.specx0,
+                               app.specVals[i+1][partial], fill='yellow')
+    
+    # cover everything but the analyzer
+    canvas.create_rectangle(0, 0, app.specx0, app.height, fill=app.bg, width=0)
+    canvas.create_rectangle(app.specx1, 0, app.width, app.height, fill=app.bg,
+                            width=0)
+    canvas.create_rectangle(0, 0, app.width, app.specy0, fill=app.bg, width=0)
+    canvas.create_rectangle(0, app.specy1, app.width, app.height, fill=app.bg,
+                            width=0)
+    canvas.create_rectangle(app.specx0, app.specy0, app.specx1, app.specy1,
+                            outline=app.lineColor, fill='', width=4)
+    
+    # scale labels
+    labelX = app.specx0 - app.margin
+    canvas.create_text(labelX, app.specy1, text='20', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 419, text='50', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 373, text='100', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 327, text='200', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 266, text='500', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 219, text='1k', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 173, text='2k',
+                       fill=app.fontColor, font='Ubuntu 12')
+    canvas.create_text(labelX, 112, text='5k', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 66, text='10k', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, app.specy0, text='20k', fill=app.fontColor,
+                       font='Ubuntu 12')
 
 def redrawAll(app, canvas):
-    canvas.create_rectangle(0, 0, app.width, app.height, fill=app.bg)
+    spectrumAnalyzer(app, canvas)
+    
     drawKeyboard(app, canvas)
     for slider in app.sliders:
         slider.draw(canvas)
     for button in app.drawButtons:
         button.draw(canvas)
-    spectrumAnalyzer(app, canvas)

@@ -9,22 +9,6 @@ s = Server(buffersize=256).boot()
 s.amp = 0.7
 
 def appStarted(app):
-    # create voices
-    app.env = Adsr(attack=0.01, decay=0.5, sustain=1.8, release=1.2,
-    dur=1.8, mul = 0.7)
-    app.portaTime = 0.1
-    
-    # modes things
-    app.modes = [target, switch, extend, random, powers, primes]
-    app.deharmMode = target
-    
-    app.voiceCount = 1
-    app.voices = []
-    for voice in range(app.voiceCount):
-        app.voices.append(Voice(69, app.env, app.portaTime, app.deharmMode))
-    
-    app.octave = 4
-    
     # piano key dictionary
     # maybe make these all buttons...
     app.whiteKeys = {"a":[60,0], "s":[62,1], "d":[64,2], "f":[65,3],
@@ -35,6 +19,7 @@ def appStarted(app):
                      "u":[70,6], "o":[73,8], "p":[75,9]}
     
     # canvas attributes
+    app.timerDelay = 50
     app.margin = app.width/50
     app.modesX, app.modesY = app.width/10, app.height/10
     app.lineWidth = 2
@@ -48,7 +33,10 @@ def appStarted(app):
     app.interNeut = 'RoyalBlue2'
     app.interClic = 'RoyalBlue1'
     
-    # modes UI
+    # modes
+    app.modes = [target, switch, extend, random, powers, primes]
+    app.deharmMode = target
+    
     modeX, modeY = app.margin, app.margin
     modeW, modeH = app.width/5, app.height/12
     
@@ -65,15 +53,23 @@ def appStarted(app):
     app.modeDecr = Button(app, app.modeVal.x1, modeY+modeH, smallW, modeH, '+',
                           incrModeVal, fontColor=app.accentColor)
     
-    app.modeSlider = Slider(app, modeX, modeY+modeH*2.1, modeW/8, modeH/2,
-                            modeW, 'Amount', 'x', 1.0)
+    app.modeSlider = Slider(app, modeX, app.modeVal.y1+app.margin/3, modeW/8,
+                            modeH/2,modeW, 'Amount', 'x', 1.0)
+    
+    # create voices
+    app.env = Adsr(attack=0.01, decay=0.5, sustain=0.5, release=1.2,
+    dur=1.8, mul = 0.7)
+    app.portaTime = 0.1
+
+    app.voice = Voice(69, app.env, app.portaTime, app.deharmMode)
+    app.octave = 4
     
     # ADSR section
     adsrY = app.height*2/3
     adsrL = app.height*2/5
     adsrW, adsrH = modeW/15, app.height/24
     app.attack = Slider(app, app.margin, adsrY, adsrW*3, adsrH, adsrL, 'A', 'y',
-                        4.0)
+                        2.0)
     app.decay = Slider(app, app.attack.x1+adsrW, adsrY, adsrW*3, adsrH, adsrL,
                        'D', 'y', 4.0)
     app.sustain = Slider(app, app.decay.x1+adsrW, adsrY, adsrW*3, adsrH, adsrL,
@@ -85,15 +81,27 @@ def appStarted(app):
     app.sustain.setValue(app.env.sustain)
     app.release.setValue(app.env.release)
     
+    # portamento slider
+    app.portaSlider = Slider(app, app.margin, app.attack.y1+app.margin*3/2,
+                             modeW/8, modeH/2, modeW, 'Portamento', 'x', 1.0)
+    app.portaSlider.setValue(app.portaTime)
+        
+    # spectrum analyzer
+    app.specx0 = int(app.width*3/4-app.margin)
+    app.specx1 = int(app.width-app.margin)
+    app.specy0, app.specy1 = app.margin, app.height - app.margin
+    
+    defaultVals = app.voice.canvasLogList(app.specy0, app.specy1)
+    app.timeSamples = 50
+    app.sampleLength = (app.specx1 - app.specx0)//app.timeSamples
+    app.specVals = [(defaultVals+[]) for time in range(app.timeSamples+1)]
+    
     # interactives list
     app.buttons = [app.modeMenu]
     app.drawButtons = [app.modeHeader, app.modeMenu, app.modeIncr, app.modeVal,
                        app.modeDecr]
     app.sliders = [app.modeSlider, app.attack, app.decay, app.sustain,
-                   app.release]
-    
-    # misc attributes
-    app.lowFreq, app.highFreq = 20, 20000
+                   app.release, app.portaSlider]
     
     # start audio server
     s.start()

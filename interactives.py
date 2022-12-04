@@ -4,7 +4,7 @@
 
 from cmu_112_graphics import *
 
-class Button:    
+class Button:
     def __init__(self, app, x0, y0, width, height, label, action, color=None,
                  fontColor=None, active=True, visible=True):
         # pass in
@@ -105,7 +105,8 @@ class Slider(Button):
     moving = False
     value = 0.0
     
-    def __init__(self, app, x0, y0, width, height, length, title, axis, bound):
+    def __init__(self, app, x0, y0, width, height, length, title, axis, bound,
+                 thickness=None):
         # pass in
         super().__init__(app, x0, y0, width, height, self.value, self.activate)
         self.startX, self.startY, self.length = self.cx, self.cy, length
@@ -127,6 +128,9 @@ class Slider(Button):
         # from https://stackoverflow.com/questions/6149006/how-to-display-a-float-with-two-decimal-places
         self.label = '%.2f' % self.value
         self.lineWidth = app.lineWidth
+        self.trackWidth = app.lineWidth*4
+        if thickness != None:
+            self.trackWidth = thickness
         self.color, self.borderColor = app.buttonColor, app.lineColor
         self.accentColor = app.accentColor
     
@@ -134,6 +138,7 @@ class Slider(Button):
         self.value = value
         if self.axis == 'x':
             transformedVal = value/self.max * (self.endX-self.startX)
+            transformedVal += self.startX
             self.pressedX, self.posX = self.cx, self.cx
             self.updatePos(transformedVal, self.cy)
         elif self.axis == 'y':
@@ -185,10 +190,20 @@ class Slider(Button):
         
         # create the slider's track and also the level line
         canvas.create_line(self.startX, self.startY, self.endX, self.endY,
-                           width=self.lineWidth*4, fill=self.borderColor)
+                           width=self.trackWidth, fill=self.borderColor)
         canvas.create_line(self.startX, self.startY, self.cx, self.cy,
                            width=self.lineWidth, fill=self.accentColor)
         super().draw(canvas)
+
+class sliderArray:
+    sliders = []
+    def __init__(self, app, x0, x1, length, count):
+        self.length = length
+        for i in range(count):
+            self.sliders.append(Slider(app, x0, x1, app.lineWidth*4,
+                                       app.lineWidth*4, length, i+1, 'y', 1.0))
+            self.sliders[i].setValue(1.0)
+        
 
 # dummy function if I want to make inactive buttons
 def dummy():
