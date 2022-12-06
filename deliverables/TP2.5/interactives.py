@@ -43,9 +43,11 @@ class Button:
                                font=self.font, fill=self.fontColor)
 
 class Dropdown(Button):
-    def __init__(self, app, x0, y0, width, height, label, elements):
+    elementButtons = []
+    
+    def __init__(self, app, cx, cy, width, height, label, elements):
         # pass in
-        super().__init__(app, x0, y0, width, height, label, self.toggleOpen)
+        super().__init__(app, cx, cy, width, height, label, self.toggleOpen)
         
         # draw vars
         self.x1 += self.height/2
@@ -58,7 +60,6 @@ class Dropdown(Button):
         self.chr = '⋁'
         
         # make the buttons
-        self.elementButtons = []
         for i in range(len(elements)):
             self.elementButtons.append(Button(app, self.x0,
                                               self.y0+height*(i+1), width,
@@ -194,21 +195,15 @@ class Slider(Button):
                            width=self.lineWidth, fill=self.accentColor)
         super().draw(canvas)
 
-class SliderArray(Slider):
+class sliderArray:
     sliders = []
-    def __init__(self, app, x0, y0, length, count):
+    def __init__(self, app, x0, x1, length, count):
         self.length = length
-        self.x1 = x0 + app.lineWidth*2*count
         for i in range(count):
-            self.sliders.append(Slider(app, x0+(i*app.lineWidth*2), y0,
-                                       0, 0, length,
-                                       '', 'y', 1.0, thickness=app.lineWidth))
+            self.sliders.append(Slider(app, x0, x1, app.lineWidth*4,
+                                       app.lineWidth*4, length, i+1, 'y', 1.0))
             self.sliders[i].setValue(1.0)
-            self.sliders[i].visible = False
-    
-    def draw(self, canvas):
-        for slider in self.sliders:
-            slider.draw(canvas)
+        
 
 # dummy function if I want to make inactive buttons
 def dummy():

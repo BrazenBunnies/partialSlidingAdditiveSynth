@@ -5,7 +5,6 @@
 # VIEW in MVC
 
 from eventHandling import *
-import math
 
 def drawKeyboard(app, canvas):
     # white keys
@@ -44,13 +43,6 @@ def drawKeyboard(app, canvas):
                        text=f'Octave: {app.octave}',
                        font=f'Ubuntu {app.height//20}', fill='white')
 
-# helper function, convert a frequency into a coordinate
-def drawFreq(freq, y1, yRange):
-    lowLog = math.log(20, 10)
-    highLog = math.log(20000, 10)
-    converted = math.log(freq, 10)
-    return y1 - yRange*(converted-lowLog)/(highLog-lowLog)
-
 # draw a spectrum analyzer from the partials being generated
 def spectrumAnalyzer(app, canvas):
     canvas.create_rectangle(app.specx0, app.specy0, app.specx1, app.specy1,
@@ -72,28 +64,28 @@ def spectrumAnalyzer(app, canvas):
     canvas.create_rectangle(0, app.specy1, app.width, app.height, fill=app.bg,
                             width=0)
     canvas.create_rectangle(app.specx0, app.specy0, app.specx1, app.specy1,
-                            outline=app.lineColor, fill='', width=app.lineWidth)
+                            outline=app.lineColor, fill='', width=4)
     
     # scale labels
     labelX = app.specx0 - app.margin
     canvas.create_text(labelX, app.specy1, text='20', fill=app.fontColor,
                        font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(50,app.specy1,app.specy1-app.specy0),
-                       text='50', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(100,app.specy1,app.specy1-app.specy0),
-                       text='100', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(200,app.specy1,app.specy1-app.specy0),
-                       text='200', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(500,app.specy1,app.specy1-app.specy0),
-                       text='500', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(1000,app.specy1,app.specy1-app.specy0),
-                       text='1k', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(2000,app.specy1,app.specy1-app.specy0),
-                       text='2k', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(5000,app.specy1,app.specy1-app.specy0),
-                       text='5k', fill=app.fontColor, font='Ubuntu 12')
-    canvas.create_text(labelX, drawFreq(10000,app.specy1,app.specy1-app.specy0),
-                       text='10k', fill=app.fontColor, font='Ubuntu 12')
+    canvas.create_text(labelX, 419, text='50', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 373, text='100', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 327, text='200', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 266, text='500', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 219, text='1k', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 173, text='2k',
+                       fill=app.fontColor, font='Ubuntu 12')
+    canvas.create_text(labelX, 112, text='5k', fill=app.fontColor,
+                       font='Ubuntu 12')
+    canvas.create_text(labelX, 66, text='10k', fill=app.fontColor,
+                       font='Ubuntu 12')
     canvas.create_text(labelX, app.specy0, text='20k', fill=app.fontColor,
                        font='Ubuntu 12')
 
@@ -101,8 +93,6 @@ def redrawAll(app, canvas):
     spectrumAnalyzer(app, canvas)
     
     drawKeyboard(app, canvas)
-    app.waveformSliderArray.draw(canvas)
-    
     for slider in app.sliders:
         slider.draw(canvas)
     for button in app.drawButtons:

@@ -17,9 +17,9 @@ date,startTime,endTime,milestone,notes
 11/26/2022,03:00PM,08:00PM,CUG,lots of gui work today. started interactives classes
 11/27/2022,01:30PM,02:30PM,PPS,something broke. python keeps crashing. solved: i changed one thing to SigTo but not the updater function. built random mode
 11/27/2022,03:30PM,04:30PM,PPS,AND IT WORKS!!! the most difficult part of this project is working. still needs cleanup and GUI but DAMN!
-11/28/2022,08:00PM,10:30PM,CUG,worked a good deal on the button and dropdown classes and added powers and primes modes
+11/28/2022,08:00PM,10:30PM,OPS,worked a good deal on the button and dropdown classes and added powers and primes modes
 11/29/2022,03:00PM,04:30PM,CUG,have dropdown menus working now
-11/30/2022,02:30AM,03:30AM,CUG,getting sliders implemented
+11/30/2022,02:30AM,03:30AM,OPS,getting sliders implemented
 11/30/2022,02:30PM,04:00PM,CUG,cleaning up things for TP2, not at MVP yet.
 11/30/2022,08:30PM,11:00PM,CUG,finished sliders! i think i can start implementing now
 12/01/2022,02:30PM,06:30PM,CUG,okay everything i just did needs to be restructured because it's too difficult to deal with cx and cy
@@ -28,4 +28,6 @@ date,startTime,endTime,milestone,notes
 12/03/2022,12:00AM,01:00AM,CUG,not sure why linking these values is so difficult
 12/03/2022,10:30AM,01:00PM,CUG,fixed the bugs and added adsr envelope
 12/03/2022,09:30PM,02:30AM,CUG,spectrum analyzer implemented. starting waveform presets
-12/04/2022,02:00PM,,CUG,added portamento slider and fixed a bug with setting the value of horizontal sliders
+12/04/2022,02:00PM,03:30PM,CUG,added portamento slider and fixed a bug with setting the value of horizontal sliders
+12/05/2022,07:30PM,09:00PM,UPG,waveform sliders now visible. still working on their implementation
+12/05/2022,10:30PM,01:00AM,UPG,dropdown added. will figure out button priority later

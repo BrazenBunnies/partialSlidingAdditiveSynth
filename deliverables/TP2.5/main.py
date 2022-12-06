@@ -34,21 +34,19 @@ def appStarted(app):
     app.interClic = 'RoyalBlue1'
     
     # modes
-    app.deharmModes = [target, switch, extend, random, powers, primes]
+    app.modes = [target, switch, extend, random, powers, primes]
     app.deharmMode = target
-    app.waveformModes = [saw, square, triangle, threeSpike, sine, custom]
-    app.waveformMode = saw
     
     modeX, modeY = app.margin, app.margin
-    modeW, modeH = app.width/6, app.height/12
+    modeW, modeH = app.width/5, app.height/12
     
     app.modeHeader = Button(app, modeX, modeY, modeW, modeH, 'Deharmonization',
                             dummy, active=False)
-    app.deharmMenu = Dropdown(app, modeX, modeY+modeH, modeW/2, modeH,
-                            app.deharmMode, app.deharmModes)
+    app.modeMenu = Dropdown(app, modeX, modeY+modeH, modeW/2, modeH,
+                            app.deharmMode, app.modes)
     
-    smallW = (app.modeHeader.x1 - app.deharmMenu.x1)/4
-    app.modeIncr = Button(app, app.deharmMenu.x1, modeY+modeH, smallW, modeH, '-',
+    smallW = (app.modeHeader.x1 - app.modeMenu.x1)/4
+    app.modeIncr = Button(app, app.modeMenu.x1, modeY+modeH, smallW, modeH, '-',
                           decrModeVal, fontColor=app.accentColor)
     app.modeVal = Button(app, app.modeIncr.x1, modeY+modeH, smallW*2, modeH,
                          app.deharmMode.value, dummy, active=False)
@@ -88,28 +86,20 @@ def appStarted(app):
                              modeW/8, modeH/2, modeW, 'Portamento', 'x', 1.0)
     app.portaSlider.setValue(app.portaTime)
         
-    # waveform shaping
-    app.waveformHeader = Button(app, app.modeHeader.x1+app.margin, modeY, modeW*2/3, modeH, 'Waveform',
-                                dummy, active=False)
-    app.waveformMenu = Dropdown(app, app.waveformHeader.x1, modeY, modeW/2, modeH, app.waveformMode, app.waveformModes)
-    app.waveformSliderArray = SliderArray(app, app.modeHeader.x1+app.margin,
-                                          app.attack.startY, app.attack.startY-app.modeHeader.y1-app.margin, partialCount) # this becomes the bottom of the header
-    
     # spectrum analyzer
-    app.specx0 = int(app.waveformSliderArray.x1+app.margin*2)
+    app.specx0 = int(app.width*3/4-app.margin)
     app.specx1 = int(app.width-app.margin)
     app.specy0, app.specy1 = app.margin, app.height - app.margin
     
     defaultVals = app.voice.canvasLogList(app.specy0, app.specy1)
-    app.timeSamples = 100
-    app.sampleLength = (app.specx1 - app.specx0)/app.timeSamples
+    app.timeSamples = 50
+    app.sampleLength = (app.specx1 - app.specx0)//app.timeSamples
     app.specVals = [(defaultVals+[]) for time in range(app.timeSamples+1)]
     
     # interactives list
-    app.menus = [app.deharmMenu, app.waveformMenu]
-    app.drawButtons = [app.modeHeader, app.deharmMenu, app.modeIncr,
-                       app.modeVal, app.modeDecr, app.waveformHeader,
-                       app.waveformMenu]
+    app.buttons = [app.modeMenu]
+    app.drawButtons = [app.modeHeader, app.modeMenu, app.modeIncr, app.modeVal,
+                       app.modeDecr]
     app.sliders = [app.modeSlider, app.attack, app.decay, app.sustain,
                    app.release, app.portaSlider]
     
@@ -124,7 +114,7 @@ def runSynth():
     print('_'*50)
     print('Running Deharmonizing Additive Synthesizer!')
     print()
-    runApp(width=1200, height=500, title='Deharmonizing Additive Synthesizer')
+    runApp(width=1000, height=500, title='Deharmonizing Additive Synthesizer')
 
 def main():
     runSynth()

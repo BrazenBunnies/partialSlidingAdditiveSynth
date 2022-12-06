@@ -45,37 +45,32 @@ def keyPressed(app, event):
     app.voice.updateFreq()
 
 def mousePressed(app, event):
-    # when mode menu is opened, if a child is pressed,
-    # update the label, the deharm mode, the voice mode, and the mode value
-    
-    # deharm menu
-    if app.deharmMenu.wasPressed(event.x, event.y):
-        app.deharmMenu.action()
-        app.deharmMode = app.deharmMenu.label
-        app.modeVal.label = app.deharmMode.value
-        app.voice.setMode(app.deharmMode)
-    else:
-        if app.deharmMenu.open:
-            app.deharmMenu.action()
-    
-    # waveform menu
-    if app.waveformMenu.wasPressed(event.x, event.y):
-        app.waveformMenu.action()
-        app.deharmMode = app.waveformMenu.label
-    else:
-        if app.waveformMenu.open:
-            app.waveformMenu.action()
-    
+    # for button in app.buttons:
+    #     if button.wasPressed(event.x, event.y):
+    #         button.action()
+    #         # break skips other buttons
+    #         break
     if app.modeIncr.wasPressed(event.x, event.y):
         app.modeIncr.action(app.deharmMode)
         app.modeVal.label = app.deharmMode.value
     if app.modeDecr.wasPressed(event.x, event.y):
         app.modeDecr.action(app.deharmMode)
         app.modeVal.label = app.deharmMode.value
-        
+    
     for slider in app.sliders:
         if slider.wasPressed(event.x, event.y):
             slider.action(event.x, event.y)
+    
+    # when mode menu is opened, if a child is pressed,
+    # update the label, the deharm mode, the voice mode, and the mode value
+    if app.modeMenu.wasPressed(event.x, event.y):
+        app.modeMenu.action()
+        app.deharmMode = app.modeMenu.label
+        app.modeVal.label = app.deharmMode.value
+        app.voice.setMode(app.deharmMode)
+    else:
+        if app.modeMenu.open:
+            app.modeMenu.toggleOpen()
     
     app.voice.deharmMode.updatePerc(app.modeSlider.value)
     app.voice.updateFreq()
@@ -111,4 +106,4 @@ def timerFired(app):
 
 # lock size
 def sizeChanged(app):
-    app.setSize(1200, 500)
+    app.setSize(1000, 500)

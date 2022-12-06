@@ -4,7 +4,7 @@
 # Herein lies the majority of the work
 
 from pyo import *
-from modes import *
+from deharmModes import *
 import math
 
 class Voice():
