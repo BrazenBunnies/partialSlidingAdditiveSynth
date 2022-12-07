@@ -31,3 +31,4 @@ date,startTime,endTime,milestone,notes
 12/04/2022,02:00PM,03:30PM,CUG,added portamento slider and fixed a bug with setting the value of horizontal sliders
 12/05/2022,07:30PM,09:00PM,UPG,waveform sliders now visible. still working on their implementation
 12/05/2022,10:30PM,01:00AM,UPG,dropdown added. will figure out button priority later
+12/06/2022,03:00PM,04:00PM,UPG,

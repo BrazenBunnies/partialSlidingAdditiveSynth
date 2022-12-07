@@ -17,6 +17,7 @@ class Voice():
         self.freq = midiToHz(note)
         self.partials = []
         self.deharmMode = deharmMode
+        # self.waveformMode = waveformMode
         
         # create fundamental
         self.fundamental = Sine(SigTo(self.freq, time=self.porta),

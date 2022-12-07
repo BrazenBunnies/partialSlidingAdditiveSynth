@@ -98,6 +98,7 @@ def spectrumAnalyzer(app, canvas):
                        font='Ubuntu 12')
 
 def redrawAll(app, canvas):
+    # canvas.create_rectangle(0, 0, app.width, app.height, fill=app.bg, width=0)
     spectrumAnalyzer(app, canvas)
     
     drawKeyboard(app, canvas)

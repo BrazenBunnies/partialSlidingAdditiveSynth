@@ -3,8 +3,10 @@
 # Mode classes
 # Defines the various algorithms
 # for generating deharmonization and waveform modes
+# wprivrat helped me, he suggested I use numpy
 
 import random as rand
+# import numpy as np
 
 partialCount = 128
 
