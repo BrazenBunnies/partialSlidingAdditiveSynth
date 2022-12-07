@@ -31,7 +31,4 @@ date,startTime,endTime,milestone,notes
 12/04/2022,02:00PM,03:30PM,CUG,added portamento slider and fixed a bug with setting the value of horizontal sliders
 12/05/2022,07:30PM,09:00PM,UPG,waveform sliders now visible. still working on their implementation
 12/05/2022,10:30PM,01:00AM,UPG,dropdown added. will figure out button priority later
-12/06/2022,03:00PM,04:00PM,UPG,figured out that drawing all the lines is what's slowing my thing down
-12/07/2022,12:00AM,02:00AM,OPS,let's not create a new list every time I want to do anything
-12/07/2022,02:00AM,04:30AM,UPS,finished custom waveforms and priority is sorted
-12/07/2022,10:30AM,12:00PM,CUG,optimizing the lines that are drawn for the spectrum analyzer. it's much faster now
+12/06/2022,03:00PM,04:00PM,UPG,

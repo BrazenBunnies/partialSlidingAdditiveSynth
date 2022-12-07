@@ -196,42 +196,15 @@ class Slider(Button):
 
 class SliderArray(Slider):
     sliders = []
-    sliderVals = []
-    active = True
-    visible = True
-    def __init__(self, app, x0, y1, length, count):
-        self.x0, self.y1, self.length = x0, y1, length
-        self.count = count
-        self.lineWidth = app.lineWidth*2
-        self.x1 = x0 + self.lineWidth*count
-        self.y0 = y1 - length
-        
-        self.action = self.activate
-        
+    def __init__(self, app, x0, y0, length, count):
+        self.length = length
+        self.x1 = x0 + app.lineWidth*2*count
         for i in range(count):
-            self.sliders.append(Slider(app, x0+(i*self.lineWidth), y1, 0, 0,
-                                       length, '', 'y', 1.0, 
-                                       thickness=app.lineWidth))
-            self.sliderVals.append(1.0)
+            self.sliders.append(Slider(app, x0+(i*app.lineWidth*2), y0,
+                                       0, 0, length,
+                                       '', 'y', 1.0, thickness=app.lineWidth))
             self.sliders[i].setValue(1.0)
             self.sliders[i].visible = False
-    
-    def updateAllVals(self, values):
-        for i in range(len(self.sliders)):
-            self.sliderVals[i] = values[i]
-            self.sliders[i].setValue(abs(values[i]))
-            
-    def activate(self, x, y):
-        self.moving = True
-        self.pressedX, self.pressedY = x, y
-        self.updatePos(x, y)
-    
-    def updatePos(self, x, y):
-        currentSlider = int((x - self.x0)/self.lineWidth)
-        if currentSlider < 0: currentSlider = 0
-        if currentSlider > self.count-1: currentSlider = self.count-1
-        self.sliders[currentSlider].updatePos(x, y)
-        self.sliderVals[currentSlider] = self.sliders[currentSlider].value
     
     def draw(self, canvas):
         for slider in self.sliders:

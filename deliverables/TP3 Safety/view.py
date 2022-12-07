@@ -51,51 +51,28 @@ def drawFreq(freq, y1, yRange):
     converted = math.log(freq, 10)
     return y1 - yRange*(converted-lowLog)/(highLog-lowLog)
 
-def calculateColor(intensity):
-    r = int(225*(0.75 + intensity*0.25))
-    g = int(225*(0.5 + intensity*0.5))
-    b = int(225*(0.4 - intensity*0.4))
-    # from https://www.cs.cmu.edu/~112/notes/notes-graphics.html#customColors
-    return f'#{r:02x}{g:02x}{b:02x}'
-
 # draw a spectrum analyzer from the partials being generated
 def spectrumAnalyzer(app, canvas):
     canvas.create_rectangle(app.specx0, app.specy0, app.specx1, app.specy1,
                             outline=app.lineColor, fill='black', width=0)
     
-    for partial in range(len(app.specVals[0])):
-        x0, y0 = app.specx0, app.specVals[0][partial]
-        color = calculateColor(app.waveformMode.amps[partial])
-        for time in range(len(app.specVals)):
-            if app.specVals[time][partial] != y0:
-                x1 = (time-1)*app.sampleLength+app.specx0
-                x2 = time*app.sampleLength+app.specx0
-                y1 = app.specVals[time-1][partial]
-                y2 = app.specVals[time][partial]
-                if y0 > app.specy0 and y1 > app.specy0:
-                    canvas.create_line(x0, y0, x1, y1, fill=color)
-                if y1 > app.specy0 and y2 > app.specy0:
-                    canvas.create_line(x1, y1, x2, y2, fill=color)
-                x0, y0, = x2, y2
-            elif time == len(app.specVals)-1:
-                if y0 > app.specy0:
-                    canvas.create_line(x0, y0, app.specx1, y0, fill=color)
+    for i in range(len(app.specVals)-1):
+        # CHANGE COLOR BASED ON AMPLITUDE?
+        for partial in range(len(app.specVals[0])):
+            canvas.create_line(i*app.sampleLength+app.specx0,
+                               app.specVals[i][partial],
+                               (i+1)*app.sampleLength+app.specx0,
+                               app.specVals[i+1][partial], fill='yellow')
     
-    # for i in range(len(app.specVals)-1):
-    #     # CHANGE COLOR BASED ON AMPLITUDE?
-    #     for partial in range(len(app.specVals[0])):
-    #         if (app.specVals[i][partial] < app.specy0 and
-    #         app.specVals[i+1][partial] < app.specy0): continue
-    #         canvas.create_line(i*app.sampleLength+app.specx0,
-    #                            app.specVals[i][partial],
-    #                            (i+1)*app.sampleLength+app.specx0,
-    #                            app.specVals[i+1][partial], fill='yellow')
-    
-    # cover lines that go above
+    # cover everything but the analyzer
+    canvas.create_rectangle(0, 0, app.specx0, app.height, fill=app.bg, width=0)
+    canvas.create_rectangle(app.specx1, 0, app.width, app.height, fill=app.bg,
+                            width=0)
     canvas.create_rectangle(0, 0, app.width, app.specy0, fill=app.bg, width=0)
+    canvas.create_rectangle(0, app.specy1, app.width, app.height, fill=app.bg,
+                            width=0)
     canvas.create_rectangle(app.specx0, app.specy0, app.specx1, app.specy1,
-                            outline=app.lineColor, fill='',
-                            width=app.lineWidth)
+                            outline=app.lineColor, fill='', width=app.lineWidth)
     
     # scale labels
     labelX = app.specx0 - app.margin
@@ -121,11 +98,10 @@ def spectrumAnalyzer(app, canvas):
                        font='Ubuntu 12')
 
 def redrawAll(app, canvas):
-    canvas.create_rectangle(0, 0, app.width, app.height, fill=app.bg, width=0)
+    # canvas.create_rectangle(0, 0, app.width, app.height, fill=app.bg, width=0)
     spectrumAnalyzer(app, canvas)
     
     drawKeyboard(app, canvas)
-    
     app.waveformSliderArray.draw(canvas)
     
     for slider in app.sliders:

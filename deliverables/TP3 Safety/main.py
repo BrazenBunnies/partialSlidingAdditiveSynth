@@ -19,6 +19,7 @@ def appStarted(app):
                      "u":[70,6], "o":[73,8], "p":[75,9]}
     
     # canvas attributes
+    app.timerDelay = 50
     app.margin = app.width/50
     app.modesX, app.modesY = app.width/10, app.height/10
     app.lineWidth = 2
@@ -29,11 +30,12 @@ def appStarted(app):
     app.lineColor = 'RoyalBlue4'
     app.accentColor = 'yellow'
     app.fontColor = 'white'
+    app.interNeut = 'RoyalBlue2'
+    app.interClic = 'RoyalBlue1'
     
     # modes
     app.deharmModes = [target, switch, extend, random, powers, primes]
     app.deharmMode = target
-    
     app.waveformModes = [saw, square, triangle, threeSpike, sine, custom]
     app.waveformMode = saw
     
@@ -56,13 +58,12 @@ def appStarted(app):
     app.modeSlider = Slider(app, modeX, app.modeVal.y1+app.margin/3, modeW/8,
                             modeH/2,modeW, 'Amount', 'x', 1.0)
     
-    # create voice
-    app.env = Adsr(attack=0.01, decay=0.5, sustain=0.2, release=0.4,
-    dur=1.11, mul = 0.7)
+    # create voices
+    app.env = Adsr(attack=0.01, decay=0.5, sustain=0.5, release=1.2,
+    dur=1.8, mul = 0.7)
     app.portaTime = 0.1
 
-    app.voice = Voice(69, app.env, app.portaTime, app.deharmMode,
-                      app.waveformMode)
+    app.voice = Voice(69, app.env, app.portaTime, app.deharmMode)
     app.octave = 4
     
     # ADSR section
@@ -88,26 +89,19 @@ def appStarted(app):
     app.portaSlider.setValue(app.portaTime)
         
     # waveform shaping
-    app.waveformHeader = Button(app, app.modeHeader.x1+app.margin, modeY,
-                                modeW*2/3, modeH, 'Waveform', dummy,
-                                active=False)
-    app.waveformMenu = Dropdown(app, app.waveformHeader.x1, modeY, modeW/2,
-                                modeH, app.waveformMode, app.waveformModes)
+    app.waveformHeader = Button(app, app.modeHeader.x1+app.margin, modeY, modeW*2/3, modeH, 'Waveform',
+                                dummy, active=False)
+    app.waveformMenu = Dropdown(app, app.waveformHeader.x1, modeY, modeW/2, modeH, app.waveformMode, app.waveformModes)
     app.waveformSliderArray = SliderArray(app, app.modeHeader.x1+app.margin,
-                                          app.attack.startY, (app.attack.startY-
-                                          app.modeHeader.y1-app.margin),
-                                          partialCount)
-    
-    app.waveformModes[-1].amps = app.waveformSliderArray.sliderVals
+                                          app.attack.startY, app.attack.startY-app.modeHeader.y1-app.margin, partialCount) # this becomes the bottom of the header
     
     # spectrum analyzer
     app.specx0 = int(app.waveformSliderArray.x1+app.margin*2)
     app.specx1 = int(app.width-app.margin)
     app.specy0, app.specy1 = app.margin, app.height - app.margin
     
-    app.timerDelay = 10
     defaultVals = app.voice.canvasLogList(app.specy0, app.specy1)
-    app.timeSamples = 40
+    app.timeSamples = 100
     app.sampleLength = (app.specx1 - app.specx0)/app.timeSamples
     app.specVals = [(defaultVals+[]) for time in range(app.timeSamples+1)]
     
@@ -124,13 +118,13 @@ def appStarted(app):
 
 def appStopped(app):
     # stop audio server
-    s.stop()
+    s.stop()    
 
 def runSynth():
     print('_'*50)
     print('Running Deharmonizing Additive Synthesizer!')
     print()
-    runApp(width=1000, height=500, title='Deharmonizing Additive Synthesizer')
+    runApp(width=1200, height=500, title='Deharmonizing Additive Synthesizer')
 
 def main():
     runSynth()

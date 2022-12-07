@@ -26,14 +26,24 @@ class Mode:
         return self.name
 
 class DeharmMode(Mode):
+    partials = natPartials + [] # break alias
     def __init__(self, name, function, value):
         super().__init__(name, function)
         self.value = value      # miscellaneous integer
+        self.perc = 0.0         # float, 0.0 to 1.0
+        
         self.ref = self.creator(self.value)
     
     def updateValue(self, value):
         self.value = value
         self.ref = self.creator(self.value)
+        self.updatePerc(self.perc)
+    
+    # get the in between value of the reference and natural partials
+    def updatePerc(self, perc):
+        for i in range(partialCount):
+            difference = self.ref[i]-natPartials[i]
+            self.partials[i] = natPartials[i]+perc*difference
 
 def incrModeVal(mode):
     if mode.value < 99:
@@ -42,6 +52,12 @@ def incrModeVal(mode):
 def decrModeVal(mode):
     if mode.value > 1:
         mode.updateValue(mode.value - 1)
+
+class WaveformMode(Mode):
+    amplitudes = []
+    def __init__(self, name, function):
+        super().__init__(name, function)
+        self.amplitudes = function()
 
 # Target specific harmonics
 def nearestTargetMultiple(n, target):
@@ -156,14 +172,10 @@ extend = DeharmMode('Extend', createExtendPartials, 1)
 random = DeharmMode('Random', createRandomPartials, 9)
 powers = DeharmMode('Powers', createPowersPartials, 2)
 primes = DeharmMode('Primes', createPrimesPartials, 1)
+deharmModes = {target.name:target, switch.name:switch, extend.name:extend,
+               random.name:random, powers.name:powers, primes.name:primes}
 
 # Waveform Modes
-class WaveformMode(Mode):
-    amps = []
-    def __init__(self, name, function):
-        super().__init__(name, function)
-        self.amps = function()
-
 # sawtooth
 def createSaw():
     return [1.0 for amp in range(partialCount)]
@@ -207,6 +219,8 @@ triangle = WaveformMode('Triangle', createTriangle)
 threeSpike = WaveformMode('3Spike', createThreeSpike)
 sine = WaveformMode('Sine', createSine)
 custom = WaveformMode('Custom', createSaw)
+waveformModes = {saw.name:saw, square.name:square, triangle.name:triangle,
+                 threeSpike.name:threeSpike, sine.name:sine, custom.name:custom}
 
 def setMode(app, mode):
     if isinstance(mode, DeharmMode):

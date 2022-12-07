@@ -57,50 +57,37 @@ def mousePressed(app, event):
     else:
         if app.deharmMenu.open:
             app.deharmMenu.action()
-        # these elements need to be in the else so they are only
-        # activated if they have priority
-        for slider in app.sliders:
-            if slider.wasPressed(event.x, event.y):
-                slider.action(event.x, event.y)
     
     # waveform menu
     if app.waveformMenu.wasPressed(event.x, event.y):
         app.waveformMenu.action()
-        app.waveformMode = app.waveformMenu.label
-        app.voice.setMode(app.waveformMode)
-        app.voice.updateWaveform()
+        app.deharmMode = app.waveformMenu.label
     else:
         if app.waveformMenu.open:
             app.waveformMenu.action()
-        # same deal as before with the priority
-        if app.waveformSliderArray.wasPressed(event.x, event.y):
-            app.waveformSliderArray.action(event.x, event.y)
-            app.waveformMode = app.waveformModes[-1]
-            app.voice.setMode(app.waveformMode)
-            app.waveformMenu.label = app.waveformMode
     
-    app.waveformSliderArray.updateAllVals(app.waveformMode.amps)
-    
-    # other buttons
     if app.modeIncr.wasPressed(event.x, event.y):
         app.modeIncr.action(app.deharmMode)
         app.modeVal.label = app.deharmMode.value
     if app.modeDecr.wasPressed(event.x, event.y):
         app.modeDecr.action(app.deharmMode)
         app.modeVal.label = app.deharmMode.value
+        
+    for slider in app.sliders:
+        if slider.wasPressed(event.x, event.y):
+            slider.action(event.x, event.y)
     
-    app.voice.updatePerc(app.modeSlider.value)
+    app.voice.deharmMode.updatePerc(app.modeSlider.value)
+    app.voice.updateFreq()
 
 def mouseDragged(app, event):
     for slider in app.sliders:
         if slider.moving:
             slider.updatePos(event.x, event.y)
     
-    if app.waveformSliderArray.moving:
-        app.waveformSliderArray.updatePos(event.x, event.y)
-    
     # mode perc update
-    app.voice.updatePerc(app.modeSlider.value)
+    app.voice.deharmMode.updatePerc(app.modeSlider.value)
+    app.voice.updateFreq()
     
     # adsr update
     app.env.setAttack(app.attack.value)
@@ -116,13 +103,12 @@ def mouseDragged(app, event):
 def mouseReleased(app, event):
     for slider in app.sliders:
         slider.moving = False
-    app.waveformSliderArray.moving = False
-    app.voice.updateWaveform()
 
 def timerFired(app):
-    app.specVals.pop(0)
-    app.specVals.append(app.voice.canvasLogList(app.specy0, app.specy1)+[])
+    for i in range(len(app.specVals)-1):
+        app.specVals[i] = app.specVals[i+1]+[]
+    app.specVals[-1] = app.voice.canvasLogList(app.specy0, app.specy1)+[]
 
 # lock size
 def sizeChanged(app):
-    app.setSize(1000, 500)
+    app.setSize(1200, 500)
