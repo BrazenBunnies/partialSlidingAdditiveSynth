@@ -49,15 +49,19 @@ def spectrumAnalyzer(app, canvas):
                 y2 = app.specVals[time][partial]
                 if y0 > app.specy0 or y1 > app.specy0:
                     if y0 != prevy0 or y1 != prevy1:
-                        canvas.create_line(x0, y0, x1, y1, fill=color)
+                        if color != '#000000':
+                            canvas.create_line(x0, y0, x1, y1, fill=color)
                 if y1 > app.specy0 or y2 > app.specy0:
                     if y1 != prevy1 or y2 != prevy2:
-                        canvas.create_line(x1, y1, x2, y2, fill=color)
+                        if color != '#000000':
+                            canvas.create_line(x1, y1, x2, y2, fill=color)
                 x0, y0, = x2, y2
             elif time == len(app.specVals)-1:
                 if y0 > app.specy0:
                     if prevy0 != y0:
-                        canvas.create_line(x0, y0, app.specx1, y0, fill=color)
+                        if color != '#000000':
+                            canvas.create_line(x0, y0, app.specx1, y0,
+                                               fill=color)
     
     # cover lines that go above
     canvas.create_rectangle(0, 0, app.width, app.specy0, fill=app.bg, width=0)
